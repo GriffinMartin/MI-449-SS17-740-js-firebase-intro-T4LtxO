@@ -20,12 +20,12 @@ const createWoofInDatabase = (woof) => {
 // Call addWoofRow, updateWoofRow, and deleteWoofRow to update the page
 const readWoofsInDatabase = () => {
   // TODO read new, changed, and deleted Firebase records
-  firebase.database().ref('woofs').on('child_added', (newWoof) => {
-    addWoofRow(newWoof.key, newWoof.val())
+  firebase.database().ref('woofs').on('child_added', (addWoof) => {
+    addWoofRow(addWoof.key, addWoof.val())
     // console.log(newWoof.val())
   })
-  firebase.database().ref('woofs').on('child_changed', (editWoof) => {
-    updateWoofRow(editWoof.key, editWoof.val())
+  firebase.database().ref('woofs').on('child_changed', (updateWoof) => {
+    updateWoofRow(updateWoof.key, updateWoof.val())
     // console.log(editWoof.val())
   })
   firebase.database().ref('woofs').on('child_removed', (deleteWoof) => {
