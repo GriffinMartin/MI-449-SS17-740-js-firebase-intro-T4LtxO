@@ -1,5 +1,3 @@
-// Variables
-
 // TODO Sign into the database anonymously
 var config = {
   apiKey: 'AIzaSyCu9M6V6i2dnQ3dReqNph77elpz2NOt68o',
@@ -13,32 +11,38 @@ firebase.initializeApp(config)
 firebase.auth().signInAnonymously()
 
 // CREATE a new woof in Firebase
-function createWoofInDatabase (woof) {
+const createWoofInDatabase = (woof) => {
   // TODO create a new record in Firebase
-  document.getElementById('woof-button').addEventListener('click', () => {
-    var woof = document.getElementById('woof-text').value
-    firebase.database().ref('woofs:').set({
-      woof
-    })
-  })
+  firebase.database().ref('woofs').push(woof)
 }
-
-createWoofInDatabase()
 
 // READ from Firebase when woofs are added, changed, or removed
 // Call addWoofRow, updateWoofRow, and deleteWoofRow to update the page
-function readWoofsInDatabase () {
+const readWoofsInDatabase = () => {
   // TODO read new, changed, and deleted Firebase records
+  firebase.database().ref('woofs').on('child_added', (newWoof) => {
+    addWoofRow(newWoof.key, newWoof.val())
+    // console.log(newWoof.val())
+  })
+  firebase.database().ref('woofs').on('child_changed', (editWoof) => {
+    updateWoofRow(editWoof.key, editWoof.val())
+    // console.log(editWoof.val())
+  })
+  firebase.database().ref('woofs').on('child_removed', (deleteWoof) => {
+    deleteWoofRow(deleteWoof.key, deleteWoof.val())
+  })
 }
 
 // UPDATE the woof in Firebase
-function updateWoofInDatabase (woofKey, woofText) {
+const updateWoofInDatabase = (woofKey, woofText) => {
   // TODO update the record in Firebase
+  firebase.database().ref('woofs').child(woofKey).child('text').set(woofText)
 }
 
 // DELETE the woof from Firebase
-function deleteWoofFromDatabase (woofKey) {
+const deleteWoofFromDatabase = (woofKey) => {
   // TODO delete the record from Firebase
+  firebase.database().ref('woofs').child(woofKey).remove()
 }
 
 // Load all of the data
