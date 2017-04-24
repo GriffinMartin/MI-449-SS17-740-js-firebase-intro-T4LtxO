@@ -29,7 +29,7 @@ const readWoofsInDatabase = () => {
     // console.log(updateWoof.val())
   })
   firebase.database().ref('woofs').on('child_removed', (deleteWoof) => {
-    deleteWoofRow(deleteWoof.key, deleteWoof.val())
+    deleteWoofRow(deleteWoof.key)
   })
 }
 
